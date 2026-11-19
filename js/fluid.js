@@ -22,6 +22,11 @@
   } catch (e) { ctx = null; }
   if (!ctx) return;
 
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) { /* matchMedia unavailable — keep motion on */ }
+
   // Trail: last mouse positions, newest first. {x, y} in CSS px, t is
   // a performance.now() timestamp. Points older than TRAIL_LIFE ms
   // are dropped, so the trail fades away once the mouse stops.
@@ -78,10 +83,14 @@
   }
 
   var start = performance.now();
+  var dream = 0; // eased 0 (Wake) → 1 (Dream)
 
   function draw(now) {
     var w = window.innerWidth, h = window.innerHeight;
     var t = (now - start) / 1000;
+    // Ease toward Dream mode when body.dream is set.
+    var target = document.body.classList.contains("dream") ? 1 : 0;
+    dream += (target - dream) * 0.05;
     ctx.clearRect(0, 0, w, h);
 
     // Ambient blobs: slow sine drift, always visible.
@@ -94,7 +103,7 @@
     var R = Math.max(w, h) * 0.42;
     glow(b1x, b1y, R, "220, 232, 236", 0.55); // glass-blue
     glow(b2x, b2y, R, "224, 219, 207", 0.50); // warm grey
-    glow(b3x, b3y, R, "122, 108, 255", 0.16); // faint purple
+    glow(b3x, b3y, R, "122, 108, 255", 0.16 + dream * 0.25); // purple, stronger in Dream
 
     // Cursor trail: newest first, alpha fading with age (0.55 at the
     // cursor down to ~0.05 before the point drops out).
@@ -106,18 +115,38 @@
       }
       var life = 1 - age / TRAIL_LIFE;
       var rgb = (i % 2 === 0) ? "122, 108, 255" : "127, 184, 208";
-      glow(trail[i].x, trail[i].y, 140, rgb, 0.55 * life);
+      // Dream mode intensifies the trail (×1.4 at full dream).
+      glow(trail[i].x, trail[i].y, 140, rgb, Math.min(0.9, 0.55 * life * (1 + dream * 0.4)));
     }
 
     // Bright glow at the cursor itself — unmissable.
     if (hasMouse) {
-      glow(mouseX, mouseY, 90, "122, 108, 255", 0.65);
+      glow(mouseX, mouseY, 90, "122, 108, 255", Math.min(0.9, 0.65 * (1 + dream * 0.4)));
     }
   }
 
+  var running = true;
+
   function frame(now) {
+    if (!running) return;
     draw(now);
     requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+
+  // Pause the loop while the tab is hidden; resume on show.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      running = false;
+    } else if (!reduceMotion) {
+      running = true;
+      requestAnimationFrame(frame);
+    }
+  });
+
+  if (reduceMotion) {
+    // Static single frame: ambient blobs only, no animation, no trail.
+    draw(start);
+  } else {
+    requestAnimationFrame(frame);
+  }
 })();
