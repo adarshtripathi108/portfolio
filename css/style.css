@@ -267,3 +267,83 @@ img {
   border-radius: 2px;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
+
+/* Hero — two columns: copy left, 3D canvas right. */
+.hero {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 72px 32px 88px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
+  min-height: 78vh;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin: 0 0 20px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 7.2vw, 88px);
+  font-weight: 700;
+}
+
+.hero-line-2 {
+  color: var(--purple);
+}
+
+.hero-sub {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 520px;
+  margin: 24px 0 32px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 560px;
+}
+
+#hero-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* No-WebGL fallback: a soft CSS gradient blob in the same palette.
+   Hidden by default; shown when hero3d.js adds .no-webgl to .hero. */
+.hero-fallback {
+  display: none;
+  position: absolute;
+  inset: 8%;
+  border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(220, 232, 236, 0.95), rgba(220, 232, 236, 0) 60%),
+    radial-gradient(circle at 70% 65%, rgba(122, 108, 255, 0.45), rgba(122, 108, 255, 0) 62%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%);
+  box-shadow: 0 32px 64px rgba(17, 17, 17, 0.12);
+}
+
+.hero.no-webgl #hero-canvas {
+  display: none;
+}
+
+.hero.no-webgl .hero-fallback {
+  display: block;
+}
