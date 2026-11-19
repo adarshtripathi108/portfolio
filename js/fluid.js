@@ -30,8 +30,8 @@
   // Trail: last mouse positions, newest first. {x, y} in CSS px, t is
   // a performance.now() timestamp. Points older than TRAIL_LIFE ms
   // are dropped, so the trail fades away once the mouse stops.
-  var TRAIL_LEN = 14;
-  var TRAIL_LIFE = 900;
+  var TRAIL_LEN = 60;
+  var TRAIL_LIFE = 2200;
   var trail = [];
   var mouseX = 0, mouseY = 0, hasMouse = false;
   var lastPush = 0;
@@ -105,8 +105,8 @@
     glow(b2x, b2y, R, "224, 219, 207", 0.50); // warm grey
     glow(b3x, b3y, R, "122, 108, 255", 0.16 + dream * 0.25); // purple, stronger in Dream
 
-    // Cursor trail: newest first, alpha fading with age (0.55 at the
-    // cursor down to ~0.05 before the point drops out).
+    // Cursor trail: newest first, alpha fading slowly with age so the
+    // ribbon behind the cursor stays visible for ~2 seconds.
     for (var i = trail.length - 1; i >= 0; i--) {
       var age = now - trail[i].t;
       if (age > TRAIL_LIFE) {
@@ -115,13 +115,14 @@
       }
       var life = 1 - age / TRAIL_LIFE;
       var rgb = (i % 2 === 0) ? "122, 108, 255" : "127, 184, 208";
-      // Dream mode intensifies the trail (×1.4 at full dream).
-      glow(trail[i].x, trail[i].y, 140, rgb, Math.min(0.9, 0.55 * life * (1 + dream * 0.4)));
+      // Dream mode intensifies the trail (×1.4 alpha, wider radius).
+      glow(trail[i].x, trail[i].y, 120 + dream * 20, rgb, Math.min(0.9, 0.6 * Math.pow(life, 0.7) * (1 + dream * 0.4)));
     }
 
-    // Bright glow at the cursor itself — unmissable.
+    // Bright glow at the cursor itself — unmissable. Grows in Dream
+    // mode so the intensification is visible, not just brighter.
     if (hasMouse) {
-      glow(mouseX, mouseY, 90, "122, 108, 255", Math.min(0.9, 0.65 * (1 + dream * 0.4)));
+      glow(mouseX, mouseY, 90 + dream * 40, "122, 108, 255", Math.min(0.9, 0.65 * (1 + dream * 0.4)));
     }
   }
 
