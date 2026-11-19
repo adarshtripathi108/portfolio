@@ -360,6 +360,46 @@ img {
   pointer-events: none;
 }
 
+/* DOM fallback for the fluid layer — shown only when WebGL fails
+   (html.fluid-failed). Two blurred gradient blobs that follow the
+   cursor via --fx / --fy (JS sets them); the second lags behind. */
+.fluid-fallback {
+  display: none;
+}
+
+html.fluid-failed .fluid-fallback {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fluid-fallback i {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(60px);
+  mix-blend-mode: multiply;
+  transform: translate(-50%, -50%);
+}
+
+.fluid-fallback i:first-child {
+  left: var(--fx, 30%);
+  top: var(--fy, 30%);
+  background: radial-gradient(circle, rgba(122, 108, 255, 0.55) 0%, rgba(122, 108, 255, 0) 65%);
+  transition: left 0.45s ease-out, top 0.45s ease-out;
+}
+
+.fluid-fallback i:last-child {
+  left: calc(var(--fx, 70%) + 10vw);
+  top: calc(var(--fy, 70%) + 8vh);
+  background: radial-gradient(circle, rgba(140, 190, 210, 0.55) 0%, rgba(140, 190, 210, 0) 65%);
+  transition: left 0.9s ease-out, top 0.9s ease-out;
+}
+
 /* Pixel-cube cursor follower — a small CSS 3D cube that trails the
    cursor with slight lag (JS moves it). Desktop pointers only. */
 .cursor-cube {
