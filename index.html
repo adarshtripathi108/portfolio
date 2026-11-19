@@ -6,201 +6,49 @@
   <title>Adarsh Tripathi — Portfolio</title>
   <meta name="description" content="Adarsh Tripathi — B.E. CSE student at Chitkara University, building clean websites with web development and Java.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <noscript><style>.reveal { opacity: 1; transform: none; } .faq-answer { display: block; }</style></noscript>
-  <script src="js/main.js" defer></script></script>
+  <script src="js/main.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
-      <a class="wordmark" href="#top"><span class="monogram" aria-hidden="true">AT</span> Adarsh Tripathi</a>
+      <a class="wordmark" href="#top">ADARSH</a>
       <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#services">What I do</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Selected work</a></li>
         <li><a href="#achievements">Achievements</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Contact</a></li>
       </ul>
-      <div class="nav-social">
-        <a href="https://github.com/adarshtripathi108" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/in/adarsh-tripathi-63b79041b/" target="_blank" rel="noopener">LinkedIn</a>
-      </div>
+      <a class="btn btn-primary btn-nav" href="mailto:adarshtripathi249@email.com">Start a project</a>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero container">
-      <p class="hero-eyebrow">Adarsh Tripathi &middot; B.E. CSE Student</p>
-      <h1>Turning ideas into <span class="accent">real projects.</span></h1>
-      <p class="hero-sub">I&rsquo;m a B.E. Computer Science student at Chitkara University, building clean websites with web development and Java &mdash; one shipped project at a time.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary" href="#work">See selected work</a>
-        <a class="btn btn-outline" href="mailto:adarshtripathi249@email.com">Get in touch</a>
+      <div class="hero-text">
+        <p class="hero-eyebrow">Strategy / Design / Technology</p>
+        <h1><span class="h1-line">Turning ideas into</span> <span class="h1-line accent-line">real projects.</span></h1>
+        <p class="hero-sub">I&rsquo;m Adarsh Tripathi, a B.E. CSE student at Chitkara University. I build clean, modern websites with web development and Java &mdash; and I learn by shipping real things.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="mailto:adarshtripathi249@email.com">Start a project</a>
+          <a class="btn btn-outline" href="#about">About me</a>
+        </div>
+        <div class="hero-stack">
+          <p class="stack-label">Working with</p>
+          <p class="stack-words" aria-label="Java, HTML, CSS, JavaScript, GitHub"><span>JAVA</span><span>HTML</span><span>CSS</span><span>JAVASCRIPT</span><span>GITHUB</span></p>
+        </div>
       </div>
-    </section>
-
-    <section class="section container reveal" id="work">
-      <p class="section-label">01. Selected work</p>
-      <h2>Things I&rsquo;ve built and shipped.</h2>
-      <div class="work-grid">
-        <article class="work-card">
-          <h3>JavaQuest</h3>
-          <p>An interactive study site for Programming in Java &mdash; 16 topics, quizzes and 186 practice problems.</p>
-          <ul class="tags">
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>Java</li>
-          </ul>
-          <p class="work-links">
-            <a href="https://adarshtripathi108.github.io/javaquest/" target="_blank" rel="noopener">Live site &rarr;</a>
-            <a href="https://github.com/adarshtripathi108/javaquest" target="_blank" rel="noopener">GitHub &rarr;</a>
-          </p>
-        </article>
-        <article class="work-card">
-          <h3>AI Calling Agent</h3>
-          <p>A basic AI calling agent built from code in Python &mdash; in progress, developed with staged commits.</p>
-          <ul class="tags">
-            <li>Python</li>
-          </ul>
-          <p class="work-links">
-            <a href="https://github.com/adarshtripathi108/ai-calling-agent" target="_blank" rel="noopener">GitHub &rarr;</a>
-          </p>
-        </article>
-        <article class="work-card">
-          <h3>KOFFA</h3>
-          <p>A 3D cafe demo website &mdash; coffee-cup hero, filterable menu and WhatsApp ordering. <span class="badge">Demo project</span></p>
-          <ul class="tags">
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-          </ul>
-        </article>
-        <article class="work-card">
-          <h3>AI Content</h3>
-          <p>A serialized AI cartoon series, &ldquo;Veer ki Duniya Yatra&rdquo; (@aibrainrot61), and an AI fashion influencer (@aadhya_sharma.546) on Instagram.</p>
-          <ul class="tags">
-            <li>AI visuals</li>
-            <li>Reels</li>
-          </ul>
-          <p class="work-links">
-            <a href="https://www.instagram.com/aibrainrot61/" target="_blank" rel="noopener">@aibrainrot61 &rarr;</a>
-            <a href="https://www.instagram.com/aadhya_sharma.546/" target="_blank" rel="noopener">@aadhya_sharma.546 &rarr;</a>
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section container reveal" id="services">
-      <p class="section-label">02. What I do</p>
-      <h2>Four things I can do for you.</h2>
-      <ol class="services-list">
-        <li class="service-row">
-          <span class="service-num" aria-hidden="true">01</span>
-          <h3>Websites</h3>
-          <p>Fast, responsive, conversion-focused websites &mdash; clean pages that load quickly and work on every screen.</p>
-        </li>
-        <li class="service-row">
-          <span class="service-num" aria-hidden="true">02</span>
-          <h3>Java</h3>
-          <p>Core Java, object-oriented programming and structured problem practice.</p>
-        </li>
-        <li class="service-row">
-          <span class="service-num" aria-hidden="true">03</span>
-          <h3>UI design</h3>
-          <p>Clean, minimal layouts with clear hierarchy and plenty of breathing room.</p>
-        </li>
-        <li class="service-row">
-          <span class="service-num" aria-hidden="true">04</span>
-          <h3>AI content</h3>
-          <p>AI visuals and reels &mdash; original characters, stories and short-form video.</p>
-        </li>
-      </ol>
-    </section>
-
-    <section class="section container reveal" id="about">
-      <p class="section-label">03. About</p>
-      <h2>A student who learns by building.</h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>I&rsquo;m Adarsh Tripathi, a B.E. Computer Science and Engineering student at Chitkara University (Himachal Pradesh), batch 2025&ndash;2029, with a CGPA of 8.45. I&rsquo;m based in Haryana, India.</p>
-          <p>I learn by building &mdash; every project on this page started as something I wanted to understand better, and each one taught me more than the last.</p>
-          <ul class="about-principles">
-            <li><strong>Learn by building</strong> &mdash; real projects over theory alone.</li>
-            <li><strong>Ship real projects</strong> &mdash; finished and live beats half-done.</li>
-            <li><strong>Consistent every day</strong> &mdash; small steps, done daily.</li>
-          </ul>
-        </div>
-        <dl class="stats">
-          <div class="stat">
-            <dt>GitHub contributions</dt>
-            <dd>200+</dd>
-          </div>
-          <div class="stat">
-            <dt>Java topics shipped as JavaQuest</dt>
-            <dd>16</dd>
-          </div>
-          <div class="stat">
-            <dt>Young Turks 2026 Round 1 percentile</dt>
-            <dd>98.42</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
-    <section class="section container reveal" id="achievements">
-      <p class="section-label">04. Achievements</p>
-      <h2>Recognised where it counts.</h2>
-      <article class="achievement-card">
-        <p class="achievement-event">Young Turks 2026 &middot; HCLTech presents, Naukri Campus</p>
-        <h3>Round 1 &mdash; 98.42 percentile</h3>
-        <p>Official rank #6314 in Round 1, and selected for Round 2 &mdash; Coding track.</p>
-        <p><a href="https://www.linkedin.com/feed/update/urn:li:activity:7517968985758449664/" target="_blank" rel="noopener">Certificate post on LinkedIn &rarr;</a></p>
-      </article>
-    </section>
-
-    <section class="section container reveal" id="faq">
-      <p class="section-label">05. FAQ</p>
-      <h2>Questions, answered honestly.</h2>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">How long does a small website take?</button>
-          <div class="faq-answer"><p>A simple site takes about 1&ndash;2 weeks, depending on scope &mdash; pages, content and features. I&rsquo;ll give you a clear timeline before we start.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">Will it work on mobile?</button>
-          <div class="faq-answer"><p>Yes &mdash; every site is designed mobile-first and checked on phone, tablet and desktop before launch.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">Can I update the site after launch?</button>
-          <div class="faq-answer"><p>Yes &mdash; content is structured for easy updates, and you get a short handover so you know exactly what to change and where.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">How do we start?</button>
-          <div class="faq-answer"><p>Mail me with your idea &mdash; I&rsquo;ll reply with scope and timeline, and we take it from there.</p></div>
-        </div>
+      <div class="hero-media">
+        <img class="hero-photo" src="assets/avatar.jpg" alt="Adarsh Tripathi" width="460" height="460">
       </div>
     </section>
   </main>
-
-  <footer class="site-footer" id="contact">
-    <div class="container">
-      <p class="section-label">06. Contact</p>
-      <h2>Let&rsquo;s build something.</h2>
-      <p class="footer-intro">Have an idea, a project, or just want to say hello? My inbox is open.</p>
-      <p><a class="footer-email" href="mailto:adarshtripathi249@email.com">adarshtripathi249@email.com</a></p>
-      <ul class="footer-links">
-        <li><a href="https://github.com/adarshtripathi108" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/adarsh-tripathi-63b79041b/" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="mailto:adarshtripathi249@email.com">Email</a></li>
-      </ul>
-      <p class="footer-location">Haryana, India</p>
-      <p class="footer-copy">&copy; <span id="year">2026</span> Adarsh Tripathi. All rights reserved.</p>
-    </div>
-  </footer>
 </body>
 </html>
