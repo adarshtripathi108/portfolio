@@ -819,3 +819,41 @@ body.dream .work-card.awake::after {
 .site-footer p {
   margin: 0;
 }
+
+/* Dream theme — body.dream re-tints the site purple. The fluid
+   shader and hero rock read the same class in their own loops. */
+body.dream {
+  background: #ECE9F7;
+}
+
+body.dream .site-header {
+  background: rgba(236, 233, 247, 0.86);
+}
+
+body.dream .hero-line-2,
+body.dream .hero-eyebrow {
+  color: var(--purple);
+}
+
+body.dream #fluid-canvas {
+  opacity: 0.85;
+}
+
+body.dream .dream-dot {
+  background: var(--purple);
+  border-color: var(--purple);
+  box-shadow: 0 0 10px rgba(122, 108, 255, 0.8);
+}
+
+body.dream .dream-toggle {
+  border-color: var(--purple);
+}
+
+body.dream .about,
+body.dream .dream-section {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+body.dream .section-index {
+  color: var(--purple);
+}
