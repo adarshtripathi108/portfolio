@@ -1,4 +1,4 @@
-// Adarsh Tripathi — Portfolio
+// Adarsh Tripathi — Portfolio (Nova-exact rebuild)
 // Mobile nav, smooth scroll, footer year, FAQ accordion, scroll reveal.
 
 (function () {
@@ -43,7 +43,8 @@
     });
   });
 
-  // FAQ accordion — one open at a time.
+  // FAQ accordion — one open at a time. The first item starts open
+  // (class "open" in the markup); clicking another moves it.
   var faqItems = document.querySelectorAll(".faq-item");
   faqItems.forEach(function (item) {
     var question = item.querySelector(".faq-question");
