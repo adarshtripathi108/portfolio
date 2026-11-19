@@ -1,7 +1,8 @@
 /* Adarsh Tripathi — Portfolio (Daiki style)
-   Three.js hero scene, part 3: + particles.
-   (Part 4 adds the animation loop, resize handling, pause behaviour
-   and graceful fallback.) Module script — the importmap
+   Three.js hero scene, complete: renderer, glass rock, rotating text
+   ring, particles, animation loop with pause behaviour, resize
+   handling, reduced-motion support and graceful fallback.
+   Module script — the importmap
    lives in index.html. Everything is wrapped so a failure leaves
    the hero text fully usable. */
 import * as THREE from "three";
@@ -141,8 +142,69 @@ try {
   // Expose the pieces later parts need.
   window.__hero3d = { renderer, scene, camera, rock, ring, particles, THREE };
 
-  // Still a static frame for now; part 4 takes over the loop.
-  renderer.render(scene, camera);
+  // ---- Animation loop, pause behaviour, resize, dream shift ----
+  const heroEl = document.querySelector(".hero");
+  let reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) { /* keep motion on */ }
+
+  const clock = new THREE.Clock();
+  const dreamColor = new THREE.Color(0x7a6cff);
+  const wakeColor = new THREE.Color(0xdce8ec);
+  const lerpedColor = wakeColor.clone();
+  let dreamAmount = 0;
+  let running = true;
+  let heroVisible = true;
+
+  function onResize() {
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    if (w === 0 || h === 0) return;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
+  }
+  window.addEventListener("resize", onResize);
+
+  if ("IntersectionObserver" in window && heroEl) {
+    new IntersectionObserver((entries) => {
+      heroVisible = entries[0].isIntersecting;
+    }, { threshold: 0 }).observe(heroEl);
+  }
+  document.addEventListener("visibilitychange", () => {
+    running = !document.hidden;
+    if (running && !reduceMotion) requestAnimationFrame(animate);
+  });
+
+  function animate() {
+    if (!running || reduceMotion) return;
+    requestAnimationFrame(animate);
+    if (!heroVisible) return;
+    const t = clock.getElapsedTime();
+    // Rock: slow rotation + gentle float.
+    rock.rotation.y = t * 0.25;
+    rock.rotation.x = Math.sin(t * 0.3) * 0.15;
+    rock.position.y = 0.1 + Math.sin(t * 0.8) * 0.12;
+    // Text ring: slow orbit.
+    ring.rotation.z = t * 0.12;
+    // Particles: slow drift.
+    particles.rotation.y = t * 0.02;
+    // Dream mode: rock colour eases toward purple.
+    const target = document.body.classList.contains("dream") ? 1 : 0;
+    dreamAmount += (target - dreamAmount) * 0.04;
+    lerpedColor.copy(wakeColor).lerp(dreamColor, dreamAmount);
+    rock.material.color.copy(lerpedColor);
+    renderer.render(scene, camera);
+  }
+
+  if (reduceMotion) {
+    // One static frame only — no loop, content fully visible.
+    renderer.render(scene, camera);
+  } else {
+    onResize();
+    animate();
+  }
 } catch (err) {
   failSoft();
 }
