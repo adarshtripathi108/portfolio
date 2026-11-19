@@ -1,14 +1,16 @@
 /* Adarsh Tripathi — Portfolio (Daiki style)
-   Three.js hero scene, part 1: renderer, camera, lights, glass rock.
-   (Part 2 adds the rotating text ring, particles, animation loop and
-   graceful fallback.) Module script — the importmap lives in index.html.
-   Everything is wrapped so a failure leaves the hero text fully usable. */
+   Three.js hero scene, part 2: + rotating 3D text ring.
+   (Part 3 adds particles; part 4 adds the animation loop, resize
+   handling and graceful fallback.) Module script — the importmap
+   lives in index.html. Everything is wrapped so a failure leaves
+   the hero text fully usable. */
 import * as THREE from "three";
 
 let renderer = null;
 let scene = null;
 let camera = null;
 let rock = null;
+let ring = null;
 
 function webglOK() {
   try {
@@ -22,6 +24,24 @@ function webglOK() {
 function failSoft() {
   const hero = document.querySelector(".hero");
   if (hero) hero.classList.add("no-webgl");
+}
+
+function makeTextSprite(text) {
+  const c = document.createElement("canvas");
+  c.width = 512;
+  c.height = 128;
+  const ctx = c.getContext("2d");
+  ctx.font = "700 62px 'Space Grotesk', Arial, sans-serif";
+  ctx.fillStyle = "#111111";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, 256, 64);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(1.6, 0.4, 1);
+  return sprite;
 }
 
 try {
@@ -53,8 +73,6 @@ try {
   scene.add(fill);
 
   // The glass/ice rock: a faceted icosahedron in a physical material.
-  // Transmission gives real glass; if it ever looks wrong on a weak GPU
-  // the material still reads as pale glass because of its colour/opacity.
   const rockGeo = new THREE.IcosahedronGeometry(1.35, 1);
   const rockMat = new THREE.MeshPhysicalMaterial({
     color: 0xdce8ec,
@@ -73,10 +91,23 @@ try {
   rock.position.set(0, 0.1, 0);
   scene.add(rock);
 
-  // Expose the pieces part 2 needs, on the module's own scope via window.
-  window.__hero3d = { renderer, scene, camera, rock, THREE };
+  // Rotating ring of 3D text around the rock: one canvas sprite per
+  // word, arranged in a circle. The group slowly rotates (part 4).
+  ring = new THREE.Group();
+  const words = ["ADARSH", "TRIPATHI", "•", "PORTFOLIO", "•", "2026", "•"];
+  words.forEach((word, i) => {
+    const angle = (i / words.length) * Math.PI * 2;
+    const sprite = makeTextSprite(word);
+    sprite.position.set(Math.cos(angle) * 2.7, Math.sin(angle) * 2.7, 0);
+    ring.add(sprite);
+  });
+  ring.rotation.x = -0.35;
+  scene.add(ring);
 
-  // Part 1 renders one static frame; part 2 takes over the loop.
+  // Expose the pieces later parts need.
+  window.__hero3d = { renderer, scene, camera, rock, ring, THREE };
+
+  // Still a static frame for now; part 4 takes over the loop.
   renderer.render(scene, camera);
 } catch (err) {
   failSoft();
