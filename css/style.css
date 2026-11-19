@@ -73,6 +73,14 @@ img {
 }
 
 /* Page sections. */
+/* Page content sits above the fluid canvas (z-index 0). The header
+   is already sticky at z-index 50; main and footer get an explicit
+   stacking position here. */
+main {
+  position: relative;
+  z-index: 1;
+}
+
 .section {
   max-width: 1160px;
   margin: 0 auto;
@@ -352,14 +360,16 @@ img {
   display: block;
 }
 
-/* Fluid shader layer — fixed fullscreen canvas behind everything.
-   Strong opacity so the cursor trails are clearly visible. */
+/* Fluid layer — fixed fullscreen Canvas 2D behind the page content.
+   z-index 0 with header/main/footer at 1+ above it, so the canvas can
+   never be hidden behind the page background. Strong opacity so the
+   cursor trails are clearly visible. */
 #fluid-canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: 0;
   opacity: 0.9;
   pointer-events: none;
 }
@@ -848,6 +858,8 @@ body.dream .work-card.awake::after {
 
 /* Footer. */
 .site-footer {
+  position: relative;
+  z-index: 1;
   max-width: 1160px;
   margin: 0 auto;
   padding: 32px;
