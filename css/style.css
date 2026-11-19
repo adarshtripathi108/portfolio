@@ -259,3 +259,105 @@ img { max-width: 100%; }
   display: block;
   border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
 }
+
+/* Stats bar — full-width dark charcoal rounded bar. */
+.stats-bar {
+  background: var(--charcoal);
+  border-radius: var(--radius);
+  padding: 48px 56px;
+  color: #FFFFFF;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin: 0;
+}
+
+.stat dd {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+.stat dt {
+  font-size: 15px;
+  color: #C9C4BB;
+  margin-top: 8px;
+}
+
+/* Selected work — 2x2 grid of large rounded cards. */
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.work-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.work-visual {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-letter {
+  font-size: 96px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.visual-tan { background: var(--accent); }
+.visual-tan .work-letter { color: var(--bg); }
+
+.visual-charcoal { background: var(--charcoal); }
+.visual-charcoal .work-letter { color: var(--accent); }
+
+.visual-beige { background: var(--border); }
+.visual-beige .work-letter { color: var(--ink); }
+
+.visual-ink { background: var(--ink); }
+.visual-ink .work-letter { color: var(--bg); }
+
+.work-body { padding: 32px; }
+
+.work-body h3 { font-size: 24px; }
+
+.work-body p { margin-top: 12px; }
+
+.work-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 20px !important;
+}
+
+.work-links a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.work-links a span { color: var(--accent); }
+.work-links a:hover { color: var(--accent); }
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 3px 10px;
+  vertical-align: middle;
+  margin-left: 8px;
+  white-space: nowrap;
+}
