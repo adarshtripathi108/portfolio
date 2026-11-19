@@ -44,5 +44,45 @@
     });
   });
 
+  // WAKE/DREAM toggle — switches the whole site mood via body.dream.
+  // The fluid shader and hero rock read the same class in their loops.
+  var dreamToggle = document.getElementById("dream-toggle");
+  var dreamLabel = dreamToggle ? dreamToggle.querySelector(".dream-label") : null;
+  var dreamInline = document.querySelector(".dream-toggle-inline");
+
+  function setDream(on) {
+    document.body.classList.toggle("dream", on);
+    if (dreamToggle) {
+      dreamToggle.setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    if (dreamLabel) {
+      dreamLabel.textContent = on ? "Wake" : "Dream";
+    }
+    if (dreamInline) {
+      dreamInline.textContent = on ? "Back to Wake mode" : "Enter Dream mode";
+    }
+    if (!on) {
+      // Leaving dream mode: cards forget they were woken, so they
+      // sleep again next time.
+      document.querySelectorAll(".work-card.awake").forEach(function (card) {
+        card.classList.remove("awake");
+      });
+    }
+  }
+
+  if (dreamToggle) {
+    dreamToggle.addEventListener("click", function () {
+      setDream(!document.body.classList.contains("dream"));
+    });
+  }
+  if (dreamInline) {
+    dreamInline.addEventListener("click", function () {
+      setDream(!document.body.classList.contains("dream"));
+      if (document.body.classList.contains("dream")) {
+        document.getElementById("work").scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
   // MORE-SECTIONS
 })();
