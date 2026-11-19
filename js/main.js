@@ -151,5 +151,35 @@
     });
   }
 
+  // 3D tilt — subtle mouse-follow tilt on work and milestone cards.
+  // Same approach as the previous version: perspective transform,
+  // rAF-throttled, disabled on touch and reduced motion.
+  if (finePointer && !reduceMotion) {
+    var MAX_TILT = 7; // degrees, each way
+    var tiltTargets = document.querySelectorAll(".work-card, .milestone-card");
+    tiltTargets.forEach(function (card) {
+      var raf = null;
+      card.addEventListener("mousemove", function (event) {
+        var rect = card.getBoundingClientRect();
+        var px = (event.clientX - rect.left) / rect.width - 0.5;
+        var py = (event.clientY - rect.top) / rect.height - 0.5;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          card.style.transition = "transform 0.1s ease-out";
+          card.style.transform =
+            "perspective(900px) rotateX(" + (-py * MAX_TILT).toFixed(2) +
+            "deg) rotateY(" + (px * MAX_TILT).toFixed(2) + "deg) translateZ(0)";
+          card.classList.add("is-tilting");
+        });
+      });
+      card.addEventListener("mouseleave", function () {
+        if (raf) cancelAnimationFrame(raf);
+        card.style.transition = "";
+        card.style.transform = "";
+        card.classList.remove("is-tilting");
+      });
+    });
+  }
+
   // MORE-SECTIONS
 })();
