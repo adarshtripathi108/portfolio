@@ -633,3 +633,61 @@ img {
 .work-memory {
   color: var(--purple);
 }
+
+/* Dream Mode section + sleeping-card state.
+   In Dream mode the work cards dim ("held by the dream"); clicking
+   one wakes it with a small pop (see main.js). */
+.dream-section {
+  background: rgba(122, 108, 255, 0.07);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  max-width: none;
+  text-align: center;
+}
+
+.dream-section .section-index,
+.dream-section h2,
+.dream-section p {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dream-section h2 {
+  margin-bottom: 20px;
+}
+
+.dream-section .btn {
+  margin-top: 12px;
+}
+
+body.dream .work-card {
+  filter: grayscale(0.55) brightness(0.92);
+  opacity: 0.82;
+}
+
+body.dream .work-card::after {
+  content: "Held by the dream — click to wake";
+  display: block;
+  padding: 10px 26px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--purple);
+}
+
+body.dream .work-card.awake {
+  filter: none;
+  opacity: 1;
+  animation: wake-pop 0.45s ease;
+}
+
+body.dream .work-card.awake::after {
+  content: "Awake";
+}
+
+@keyframes wake-pop {
+  0% { transform: scale(0.97); }
+  55% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
