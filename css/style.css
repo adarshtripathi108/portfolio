@@ -525,3 +525,111 @@ img {
   font-size: 14px;
   color: var(--muted);
 }
+
+/* Selected Works — 3 cards with CSS-only monogram visuals.
+   The grid supplies perspective for the mouse-follow 3D tilt in JS. */
+.works h2 {
+  margin-bottom: 40px;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  perspective: 1000px;
+}
+
+.work-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+.work-card.is-tilting {
+  box-shadow: 0 28px 56px rgba(17, 17, 17, 0.18);
+}
+
+.work-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-visual span {
+  font-family: var(--font-display);
+  font-size: 84px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 4px 24px rgba(17, 17, 17, 0.18);
+}
+
+.work-visual-javaquest {
+  background: linear-gradient(135deg, #DCE8EC 0%, #B9D2DC 55%, #8FB6C6 100%);
+}
+
+.work-visual-agent {
+  background: linear-gradient(135deg, #7A6CFF 0%, #9B8FFF 55%, #6A5CE0 100%);
+}
+
+.work-visual-koffa {
+  background: linear-gradient(135deg, #111111 0%, #3A3835 60%, #55524C 100%);
+}
+
+.work-body {
+  padding: 26px 26px 28px;
+}
+
+.work-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.work-body h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.work-body > p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.work-role {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.work-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 18px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.work-links a {
+  border-bottom: 1px solid var(--glass);
+}
+
+.work-links a:hover {
+  border-bottom-color: var(--purple);
+}
+
+.work-memory {
+  color: var(--purple);
+}
