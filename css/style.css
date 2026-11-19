@@ -347,3 +347,69 @@ img {
 .hero.no-webgl .hero-fallback {
   display: block;
 }
+
+/* Fluid shader layer — fixed fullscreen canvas behind everything.
+   Kept subtle (opacity) so text stays readable. */
+#fluid-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Pixel-cube cursor follower — a small CSS 3D cube that trails the
+   cursor with slight lag (JS moves it). Desktop pointers only. */
+.cursor-cube {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  z-index: 100;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform: translate3d(-100px, -100px, 0) rotateX(-24deg) rotateY(32deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cursor-cube.on {
+  opacity: 1;
+}
+
+.cube-face {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(17, 17, 17, 0.55);
+}
+
+.cube-front {
+  background: rgba(220, 232, 236, 0.9);
+  transform: translateZ(7px);
+}
+
+.cube-top {
+  background: rgba(122, 108, 255, 0.85);
+  transform: rotateX(90deg) translateZ(7px);
+}
+
+.cube-side {
+  background: rgba(17, 17, 17, 0.75);
+  transform: rotateY(90deg) translateZ(7px);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-cube {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-cube {
+    display: none;
+  }
+}
