@@ -106,7 +106,9 @@ img { max-width: 100%; }
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 12px 24px rgba(27, 25, 23, 0.16); }
+
+.btn:active { transform: translateY(1px); box-shadow: 0 4px 10px rgba(27, 25, 23, 0.12); }
 
 .btn-primary { background: var(--ink); color: #FFFFFF; }
 
@@ -125,6 +127,29 @@ img { max-width: 100%; }
 }
 
 .btn-nav { height: 48px; padding: 0 24px; font-size: 15px; }
+
+/* 3D tilt — perspective parents and tilt-ready cards.
+   JS (main.js) sets the rotateX/rotateY inline on mousemove;
+   these rules only prepare the transform and deepen the shadow. */
+.work-grid,
+.services-grid,
+.milestone-grid {
+  perspective: 1000px;
+}
+
+.work-card,
+.service-card,
+.milestone-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.work-card.is-tilting,
+.service-card.is-tilting,
+.milestone-card.is-tilting {
+  box-shadow: 0 24px 48px rgba(27, 25, 23, 0.14);
+}
 
 /* Header — sticky, cream, no border. */
 .site-header {
@@ -818,6 +843,14 @@ img { max-width: 100%; }
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  /* No 3D tilt when reduced motion is preferred. */
+  .work-card,
+  .service-card,
+  .milestone-card {
+    transform: none !important;
     transition: none;
   }
 }
