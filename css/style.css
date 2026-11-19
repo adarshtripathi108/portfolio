@@ -691,3 +691,59 @@ body.dream .work-card.awake::after {
   55% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
+
+/* Milestones — 2x2 grid of white cards. */
+.milestones h2 {
+  margin-bottom: 40px;
+}
+
+.milestone-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.milestone-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+.milestone-card.is-tilting {
+  box-shadow: 0 28px 56px rgba(17, 17, 17, 0.16);
+}
+
+.milestone-year {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--purple);
+  margin: 0 0 10px;
+}
+
+.milestone-card h3 {
+  font-size: 21px;
+  margin-bottom: 10px;
+}
+
+.milestone-card > p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.milestone-card p a {
+  font-weight: 600;
+  border-bottom: 1px solid var(--glass);
+}
+
+.milestone-card p a:hover {
+  border-bottom-color: var(--purple);
+}
