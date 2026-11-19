@@ -108,5 +108,48 @@
     });
   }
 
+  // Pixel-cube cursor follower — a small CSS 3D cube trailing the
+  // cursor with slight lag. Desktop fine pointers only, and skipped
+  // under prefers-reduced-motion (CSS hides it there too).
+  var cube = document.querySelector(".cursor-cube");
+  var finePointer = false;
+  var reduceMotion = false;
+  try {
+    finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) { /* matchMedia unavailable */ }
+  if (cube && finePointer && !reduceMotion) {
+    var cubeX = -100, cubeY = -100, targetX = -100, targetY = -100;
+    var cubeShown = false;
+    var cubeRaf = null;
+    document.addEventListener("mousemove", function (e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!cubeShown) {
+        cubeShown = true;
+        cubeX = targetX;
+        cubeY = targetY;
+        cube.classList.add("on");
+      }
+      if (!cubeRaf) {
+        cubeRaf = requestAnimationFrame(function step() {
+          cubeRaf = null;
+          cubeX += (targetX - cubeX) * 0.18;
+          cubeY += (targetY - cubeY) * 0.18;
+          cube.style.transform =
+            "translate3d(" + (cubeX - 7) + "px," + (cubeY - 7) + "px, 0)" +
+            " rotateX(-24deg) rotateY(32deg)";
+          if (Math.abs(targetX - cubeX) > 0.5 || Math.abs(targetY - cubeY) > 0.5) {
+            cubeRaf = requestAnimationFrame(step);
+          }
+        });
+      }
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () {
+      cube.classList.remove("on");
+      cubeShown = false;
+    });
+  }
+
   // MORE-SECTIONS
 })();
