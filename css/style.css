@@ -960,3 +960,81 @@ body.dream .section-index {
     padding: 24px 20px;
   }
 }
+
+/* Project detail pages ("Open the memory"). */
+.memory-back {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.memory-title {
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 700;
+}
+
+.memory-tagline {
+  font-size: 20px;
+  color: var(--ink-soft);
+  margin: 16px 0 36px;
+}
+
+.memory-visual {
+  border-radius: var(--radius);
+  height: 240px;
+  margin-bottom: 40px;
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  align-items: start;
+}
+
+.memory-body > p {
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.memory-facts {
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.memory-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.memory-facts dt {
+  color: var(--muted);
+}
+
+.memory-facts dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+}
+
+.memory-next {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@media (max-width: 820px) {
+  .memory-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
