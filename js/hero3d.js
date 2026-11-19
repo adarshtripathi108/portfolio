@@ -1,7 +1,7 @@
 /* Adarsh Tripathi — Portfolio (Daiki style)
-   Three.js hero scene, part 2: + rotating 3D text ring.
-   (Part 3 adds particles; part 4 adds the animation loop, resize
-   handling and graceful fallback.) Module script — the importmap
+   Three.js hero scene, part 3: + particles.
+   (Part 4 adds the animation loop, resize handling, pause behaviour
+   and graceful fallback.) Module script — the importmap
    lives in index.html. Everything is wrapped so a failure leaves
    the hero text fully usable. */
 import * as THREE from "three";
@@ -104,8 +104,42 @@ try {
   ring.rotation.x = -0.35;
   scene.add(ring);
 
+  // Particles: a sparse shell of tiny pale points drifting around the
+  // rock, in glass-blue and purple. Slow rotation in part 4.
+  const particleCount = 260;
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const blue = new THREE.Color(0x9fc4d4);
+  const purple = new THREE.Color(0x7a6cff);
+  const tmpColor = new THREE.Color();
+  for (let i = 0; i < particleCount; i++) {
+    // Random point in a spherical shell, radius 2.2–4.6.
+    const r = 2.2 + Math.random() * 2.4;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.7;
+    positions[i * 3 + 2] = r * Math.cos(phi);
+    tmpColor.copy(Math.random() < 0.6 ? blue : purple);
+    colors[i * 3] = tmpColor.r;
+    colors[i * 3 + 1] = tmpColor.g;
+    colors[i * 3 + 2] = tmpColor.b;
+  }
+  const particleGeo = new THREE.BufferGeometry();
+  particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  particleGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  const particles = new THREE.Points(particleGeo, new THREE.PointsMaterial({
+    size: 0.045,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.75,
+    sizeAttenuation: true,
+    depthWrite: false
+  }));
+  scene.add(particles);
+
   // Expose the pieces later parts need.
-  window.__hero3d = { renderer, scene, camera, rock, ring, THREE };
+  window.__hero3d = { renderer, scene, camera, rock, ring, particles, THREE };
 
   // Still a static frame for now; part 4 takes over the loop.
   renderer.render(scene, camera);
