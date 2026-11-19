@@ -4,13 +4,17 @@
    glass-blue, purple and warm grey on a cream base. Moving the cursor
    leaves a trail of colour that fades. Subtle by design so text stays
    readable. In Dream mode (body.dream) the purple intensifies.
-   Plain script, raw WebGL, no dependencies. Fails silently: if WebGL
-   or the canvas is unavailable the page simply has no fluid layer. */
+   Plain script, raw WebGL, no dependencies. If WebGL or the canvas is
+   unavailable it warns in the console and adds a fluid-failed class
+   to <html>, which reveals the CSS/DOM fallback blobs instead. */
 (function () {
   "use strict";
 
   var canvas = document.getElementById("fluid-canvas");
-  if (!canvas) return;
+  if (!canvas) {
+    document.documentElement.classList.add("fluid-failed");
+    return;
+  }
 
   var reduceMotion = false;
   try {
@@ -22,7 +26,11 @@
     gl = canvas.getContext("webgl", { alpha: true, antialias: false }) ||
          canvas.getContext("experimental-webgl", { alpha: true, antialias: false });
   } catch (e) { gl = null; }
-  if (!gl) { canvas.style.display = "none"; return; }
+  if (!gl) {
+    console.warn("fluid: WebGL context unavailable — using DOM fallback");
+    document.documentElement.classList.add("fluid-failed");
+    return;
+  }
 
   var VERT =
     "attribute vec2 aPos;\n" +
@@ -48,9 +56,9 @@
     "  float d1 = length(p - b1);\n" +
     "  float d2 = length(p - b2);\n" +
     "  float d3 = length(p - b3);\n" +
-    "  col = mix(col, vec3(0.863, 0.910, 0.925), smoothstep(0.55, 0.0, d1) * 0.55);\n" +
-    "  col = mix(col, vec3(0.878, 0.859, 0.812), smoothstep(0.60, 0.0, d2) * 0.45);\n" +
-    "  col = mix(col, vec3(0.478, 0.424, 1.000), smoothstep(0.55, 0.0, d3) * (0.10 + uDream * 0.22));\n" +
+    "  col = mix(col, vec3(0.863, 0.910, 0.925), (1.0 - smoothstep(0.0, 0.55, d1)) * 0.80);\n" +
+    "  col = mix(col, vec3(0.878, 0.859, 0.812), (1.0 - smoothstep(0.0, 0.60, d2)) * 0.65);\n" +
+    "  col = mix(col, vec3(0.478, 0.424, 1.000), (1.0 - smoothstep(0.0, 0.55, d3)) * (0.15 + uDream * 0.33));\n" +
     // Cursor trail: 8 fading points, alternating purple / glass-blue.
     "  for (int i = 0; i < 8; i++) {\n" +
     "    vec3 tp = uTrail[i];\n" +
@@ -58,9 +66,9 @@
     "    vec2 tpPos = tp.xy - 0.5;\n" +
     "    tpPos.x *= uRes.x / uRes.y;\n" +
     "    float d = length(p - tpPos);\n" +
-    "    float glow = exp(-d * d * 26.0) * tp.z;\n" +
+    "    float glow = exp(-d * d * 14.0) * tp.z;\n" +
     "    vec3 trailCol = (i % 2 == 0) ? vec3(0.478, 0.424, 1.000) : vec3(0.620, 0.780, 0.870);\n" +
-    "    col = mix(col, trailCol, glow * (0.45 + uDream * 0.30));\n" +
+    "    col = mix(col, trailCol, glow * (0.70 + uDream * 0.25));\n" +
     "  }\n" +
     "  gl_FragColor = vec4(col, 1.0);\n" +
     "}\n";
@@ -85,7 +93,8 @@
       throw new Error("link: " + gl.getProgramInfoLog(program));
     }
   } catch (e) {
-    canvas.style.display = "none";
+    console.warn("fluid: shader failed — " + e.message + " — using DOM fallback");
+    document.documentElement.classList.add("fluid-failed");
     return;
   }
   gl.useProgram(program);
@@ -150,7 +159,7 @@
     dream += (target - dream) * 0.05;
     // Fade the trail.
     for (var i = 0; i < 8; i++) {
-      trail[i * 3 + 2] *= 0.96;
+      trail[i * 3 + 2] *= 0.985;
     }
     gl.uniform2f(uRes, canvas.width, canvas.height);
     gl.uniform1f(uTime, (now - start) / 1000);
