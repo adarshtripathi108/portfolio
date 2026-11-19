@@ -181,5 +181,13 @@
     });
   }
 
-  // MORE-SECTIONS
+  // Dream-wake — in Dream mode the work cards sleep ("held by the
+  // dream"); clicking a sleeping card wakes it with a small pop.
+  document.querySelectorAll(".work-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      if (document.body.classList.contains("dream") && !card.classList.contains("awake")) {
+        card.classList.add("awake");
+      }
+    });
+  });
 })();
