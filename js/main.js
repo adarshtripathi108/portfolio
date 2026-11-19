@@ -86,4 +86,39 @@
       el.classList.add("visible");
     });
   }
+
+  // 3D tilt — subtle mouse-follow tilt on the cards and the hero photo.
+  // Disabled on touch devices and when reduced motion is preferred.
+  // Uses requestAnimationFrame so the transform updates once per frame.
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (finePointer && !reduceMotion) {
+    var MAX_TILT = 7; // degrees, each way
+    var tiltTargets = document.querySelectorAll(
+      ".work-card, .service-card, .milestone-card, .hero-photo"
+    );
+    tiltTargets.forEach(function (card) {
+      var raf = null;
+      card.addEventListener("mousemove", function (event) {
+        var rect = card.getBoundingClientRect();
+        var px = (event.clientX - rect.left) / rect.width - 0.5;
+        var py = (event.clientY - rect.top) / rect.height - 0.5;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          card.style.transition = "transform 0.1s ease-out";
+          card.style.transform =
+            "perspective(900px) rotateX(" + (-py * MAX_TILT).toFixed(2) +
+            "deg) rotateY(" + (px * MAX_TILT).toFixed(2) + "deg) translateZ(0)";
+          card.classList.add("is-tilting");
+        });
+      });
+      card.addEventListener("mouseleave", function () {
+        if (raf) cancelAnimationFrame(raf);
+        // Restore the stylesheet transition so the card eases back flat.
+        card.style.transition = "";
+        card.style.transform = "";
+        card.classList.remove("is-tilting");
+      });
+    });
+  }
 })();
