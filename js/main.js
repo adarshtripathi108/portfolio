@@ -151,23 +151,6 @@
     });
   }
 
-  // Fluid fallback — only when WebGL failed (html.fluid-failed):
-  // move the DOM gradient blobs with the cursor.
-  if (document.documentElement.classList.contains("fluid-failed")) {
-    var rootEl = document.documentElement;
-    var fluidRaf = null;
-    document.addEventListener("mousemove", function (event) {
-      if (fluidRaf) return;
-      var fx = event.clientX / window.innerWidth * 100;
-      var fy = event.clientY / window.innerHeight * 100;
-      fluidRaf = requestAnimationFrame(function () {
-        fluidRaf = null;
-        rootEl.style.setProperty("--fx", fx.toFixed(1) + "%");
-        rootEl.style.setProperty("--fy", fy.toFixed(1) + "%");
-      });
-    }, { passive: true });
-  }
-
   // 3D tilt — subtle mouse-follow tilt on work and milestone cards.
   // Same approach as the previous version: perspective transform,
   // rAF-throttled, disabled on touch and reduced motion.
