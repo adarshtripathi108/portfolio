@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KOFFA — Adarsh Tripathi</title>
+  <meta name="description" content="KOFFA — a 3D cafe demo website by Adarsh Tripathi: coffee-cup hero, filterable menu, WhatsApp ordering.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=3">
+</head>
+<body>
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">Adarsh Tripathi</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav" aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button id="dream-toggle" class="dream-toggle" aria-pressed="false" aria-label="Toggle dream mode"><span class="dream-dot"></span><span class="dream-label">Dream</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section memory">
+      <p><a class="memory-back" href="../index.html#work">&larr; All works</a></p>
+      <p class="section-index">Selected Work &middot; 2026 &middot; Demo</p>
+      <h1 class="memory-title">KOFFA</h1>
+      <p class="memory-tagline">A 3D cafe demo website, built to pitch local caf&eacute;s.</p>
+      <div class="work-visual work-visual-koffa memory-visual" aria-hidden="true"><span>K</span></div>
+      <div class="memory-grid">
+        <div class="memory-body">
+          <p>KOFFA is a demo-first project: before approaching any local caf&eacute;, I built a complete sample site so owners can see what a 3D website actually looks like. A 3D coffee-cup hero, a filterable menu with &rupee; prices, a WhatsApp order drawer and a book-a-table form.</p>
+          <p>The content is swappable &mdash; the same build can be re-skinned for any caf&eacute; with its own menu, prices and branding. The public demo link is not published yet.</p>
+        </div>
+        <dl class="memory-facts">
+          <div><dt>Role</dt><dd>Design &amp; build</dd></div>
+          <div><dt>Year</dt><dd>2026</dd></div>
+          <div><dt>Type</dt><dd>Demo project</dd></div>
+          <div><dt>Highlights</dt><dd>3D hero, menu filters, WhatsApp ordering</dd></div>
+          <div><dt>Status</dt><dd>Demo ready, not yet published</dd></div>
+        </dl>
+      </div>
+      <p class="memory-next">Back: <a href="javaquest.html">JavaQuest &rarr;</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year">2026</span> Adarsh Tripathi. All rights reserved.</p>
+    <p>Design inspired by Daiki Fujita &amp; Adrien Qu&eacute;chon.</p>
+  </footer>
+
+  <script src="../js/fluid.js?v=3" defer></script>
+  <script src="../js/main.js?v=3" defer></script>
+</body>
+</html>
