@@ -274,6 +274,13 @@ img { max-width: 100%; }
 .hero-media {
   display: flex;
   justify-content: center;
+  perspective: 900px;
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .hero-photo {
@@ -283,6 +290,14 @@ img { max-width: 100%; }
   object-fit: cover;
   display: block;
   border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
+  box-shadow: 0 24px 48px rgba(27, 25, 23, 0.16), 0 8px 20px rgba(192, 138, 100, 0.18);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.hero-photo.is-tilting {
+  box-shadow: 0 32px 64px rgba(27, 25, 23, 0.2), 0 12px 28px rgba(192, 138, 100, 0.22);
 }
 
 /* Stats bar — full-width dark charcoal rounded bar. */
@@ -536,6 +551,26 @@ img { max-width: 100%; }
   flex-shrink: 0;
 }
 
+/* Contact line in the About section — email, GitHub, LinkedIn. */
+.about-contact {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 16px;
+}
+
+.about-contact a {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.about-contact a:hover { color: var(--accent); }
+
+.about-contact .contact-sep { color: var(--muted); }
+
 /* FAQ — centred heading, stacked white cards, first open by default. */
 .section-head-centred {
   text-align: center;
@@ -723,6 +758,23 @@ img { max-width: 100%; }
   flex-wrap: wrap;
 }
 
+/* Visible contact email under the footer buttons. */
+.footer-email {
+  margin: 28px 0 0;
+  font-size: 17px;
+}
+
+.footer-email a {
+  color: #E5E5E5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-email a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
 .footer-links {
   list-style: none;
   display: flex;
@@ -849,8 +901,11 @@ img { max-width: 100%; }
   /* No 3D tilt when reduced motion is preferred. */
   .work-card,
   .service-card,
-  .milestone-card {
+  .milestone-card,
+  .hero-photo {
     transform: none !important;
     transition: none;
   }
+
+  .hero-media { animation: none; }
 }
