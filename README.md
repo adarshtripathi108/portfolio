@@ -1,31 +1,37 @@
 # Adarsh Tripathi — Portfolio
 
-Personal portfolio website for Adarsh Tripathi, B.E. CSE student at Chitkara University. A clean single-page site rebuilt to match the Themewagon Nova template exactly — same layout, palette and structure — built as original plain HTML/CSS/JS, no build step.
+Personal portfolio website for Adarsh Tripathi, B.E. CSE student at Chitkara University. Daiki Fujita–style structure (numbered sections, exactly three selected works, WAKE/DREAM toggle) merged with Adrien Quéchon–style cursor-reactive fluid colour — built as original plain HTML/CSS/JS plus Three.js, no build step.
 
 **Live:** https://adarshtripathi108.github.io/portfolio/
 
-## Design (Nova-exact)
+## Design
 
-- Palette: warm cream `#FFFBF5` background, near-black `#111111` headings, warm grey `#6E6E6E` body, tan accent `#C08A64`, beige borders `#EAE3D8`, dark charcoal `#1B1917` stats bar, near-black `#0F0E0D` footer.
-- Font: Inter throughout (Google Fonts + system fallback).
-- Pill buttons (56px), 24px card radii, organic blob hero image.
-- Subtle 3D (same palette, same layout): mouse-follow tilt on the work, services and milestone cards (max ~7°), hero photo tilt + gentle float, and a 3D press feel on buttons — CSS/JS only, disabled on touch devices and when reduced motion is preferred.
-- Contact email is visible as text in the footer panel and in the About section (alongside GitHub and LinkedIn links). No phone number is published on the site.
-- No blue anywhere. The only photo is Adarsh's own GitHub avatar (`assets/avatar.jpg`), used in the hero and About sections; all other visuals are CSS-only.
+- Palette: cream `#F2F0E9` background, ink `#111111` text, muted `#9A9A9A`, pale glass-blue `#DCE8EC`, purple dream accent `#7A6CFF`.
+- Fonts: Space Grotesk for display, Inter for body (Google Fonts + system fallback).
+- Hero: Three.js scene — a floating glass/ice rock, a rotating ring of 3D text, and a particle cloud. Graceful fallback: if WebGL or the CDN fails, the headline stays with a CSS gradient blob.
+- Fluid background: a fixed fullscreen fragment-shader nebula (glass-blue, purple, warm grey on cream). Moving the cursor reveals trailing colour that fades. Subtle by design; intensifies in Dream mode.
+- WAKE/DREAM toggle: re-tints the whole site purple, deepens the fluid, shifts the hero rock. In Dream mode the three work cards sleep ("held by the dream — click to wake"); clicking one wakes it.
+- Pixel-cube cursor follower (desktop fine pointers only), mouse-follow 3D tilt on work and milestone cards, scroll reveal throughout.
+- Performance and access: pixel ratio capped at 2, rendering pauses when the tab is hidden or the hero is off-screen, `prefers-reduced-motion` disables the animation (content stays fully visible), touch devices get no tilt.
+- Contact email is visible as text in the Contact section (alongside GitHub and LinkedIn links). No phone number is published on the site. No fake testimonials or awards — milestones are real.
 
 ## Structure
 
-- `index.html` — the whole site: sticky header, hero, stats bar, Selected work, What I do, About, FAQ, Milestones, dark footer panel
-- `css/style.css` — all styles (cream/tan/ink, responsive with mobile nav below 820px)
-- `js/main.js` — mobile nav, smooth scroll, footer year, FAQ accordion (first item open by default), scroll reveal, 3D mouse tilt (fine-pointer only)
+- `index.html` — the site: sticky header, 3D hero, (01) About, (02) Disciplines, (03) Selected Works (exactly 3), (04) Dream Mode, (05) Milestones, (06) Contact, footer
+- `work/javaquest.html`, `work/ai-calling-agent.html`, `work/koffa.html` — one project detail page per selected work ("Open the memory")
+- `css/style.css` — all styles (responsive with mobile nav below 820px)
+- `js/fluid.js` — cursor-reactive fluid shader background (raw WebGL)
+- `js/hero3d.js` — Three.js hero scene (ES module, pinned CDN importmap)
+- `js/main.js` — mobile nav, dream toggle, scroll reveal, cursor cube, card tilt, dream-wake
 - `assets/avatar.jpg` — Adarsh's GitHub avatar photo
-- `favicon.svg` — "AT" monogram favicon (tan)
-- `404.html` — simple not-found page
+- `favicon.svg` — "AT" monogram favicon (ink + purple)
+- `404.html` — self-contained not-found page in the new palette
+- `robots.txt`, `sitemap.xml` — search indexing
 - `.nojekyll` — tells GitHub Pages to serve files as-is
 
 ## Run locally
 
-No build step — open `index.html` in a browser, or serve the folder:
+No build step — serve the folder (ES modules need http, not `file://`):
 
 ```bash
 python3 -m http.server 8000
