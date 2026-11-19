@@ -269,6 +269,10 @@ img {
 }
 
 /* Hero — two columns: copy left, 3D canvas right. */
+.hero-copy {
+  user-select: none; /* dragging across the hero should not select the headline */
+}
+
 .hero {
   max-width: 1160px;
   margin: 0 auto;
@@ -349,14 +353,14 @@ img {
 }
 
 /* Fluid shader layer — fixed fullscreen canvas behind everything.
-   Kept subtle (opacity) so text stays readable. */
+   Strong opacity so the cursor trails are clearly visible. */
 #fluid-canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  opacity: 0.55;
+  opacity: 0.9;
   pointer-events: none;
 }
 
@@ -876,7 +880,7 @@ body.dream .hero-eyebrow {
 }
 
 body.dream #fluid-canvas {
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
 body.dream .dream-dot {
