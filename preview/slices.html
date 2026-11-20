@@ -108,12 +108,26 @@
 (function () {
   var frame = document.getElementById('sliceFrame');
   var btn = document.getElementById('replayBtn');
+  var slices = frame.querySelectorAll('.slice');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function play() {
     frame.classList.remove('play');
-    void frame.offsetWidth; /* restart the animation */
-    frame.classList.add('play');
+    /* The old synchronous remove → reflow → re-add never restarted the
+       child-slice animations in Chromium: the finished fill-mode animations
+       kept holding the slices assembled. So cancel them explicitly, flush
+       style per slice, and re-add the class two frames later, after the
+       removal has been painted. */
+    for (var i = 0; i < slices.length; i++) {
+      var anims = slices[i].getAnimations ? slices[i].getAnimations() : [];
+      for (var j = 0; j < anims.length; j++) anims[j].cancel();
+      void slices[i].offsetWidth;
+    }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        frame.classList.add('play');
+      });
+    });
   }
 
   if (!reduced) {
