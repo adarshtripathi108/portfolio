@@ -449,7 +449,7 @@ main {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 600px 1fr;
   gap: 56px;
   align-items: start;
 }
@@ -460,6 +460,91 @@ main {
   object-fit: cover;
   border-radius: var(--radius);
   box-shadow: 0 24px 48px rgba(17, 17, 17, 0.14);
+}
+
+/* Portrait panel — particle portrait in the Adri style: the photo
+   draws itself from dots on a black panel, beside a code strip. */
+.portrait-panel {
+  background: #0B0B0F;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 24px 48px rgba(17, 17, 17, 0.14);
+}
+
+.portrait-caption {
+  margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.2;
+  text-align: center;
+  background: linear-gradient(120deg, #2DD4BF 0%, #3B82F6 50%, #7A6CFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.portrait-stage {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.portrait-canvas-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000000;
+}
+
+#portrait-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.portrait-panel .portrait-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.portrait-panel.portrait-live .portrait-fallback {
+  display: none;
+}
+
+.portrait-replay {
+  display: block;
+  margin: 16px auto 0;
+  padding: 10px 22px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #E8E6F5;
+  background: rgba(122, 108, 255, 0.16);
+  border: 1px solid rgba(122, 108, 255, 0.45);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.portrait-replay:hover {
+  background: rgba(122, 108, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.portrait-replay:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
 }
 
 .about-copy p a {
