@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=5">
-  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; } .hero-fallback { display: block !important; }</style></noscript>
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; translate: none !important; scale: none !important; } .hero-fallback { display: block !important; }</style></noscript>
   <script type="importmap">
     {
       "imports": {
@@ -89,11 +89,11 @@
       </ol>
     </section>
 
-    <section id="work" class="section works reveal">
-      <p class="section-index">(03) &mdash; Selected Works</p>
-      <h2>Things I&rsquo;ve built and shipped.</h2>
+    <section id="work" class="section works">
+      <p class="section-index reveal" data-reveal-group="works">(03) &mdash; Selected Works</p>
+      <h2 class="reveal" data-reveal-group="works">Things I&rsquo;ve built and shipped.</h2>
       <div class="work-grid">
-        <article class="work-card">
+        <article class="work-card reveal" data-reveal-group="works">
           <div class="work-visual work-visual-javaquest" aria-hidden="true"><span>J</span></div>
           <div class="work-body">
             <p class="work-meta"><span>JavaQuest</span><span>2026</span></p>
@@ -107,7 +107,7 @@
             </p>
           </div>
         </article>
-        <article class="work-card">
+        <article class="work-card reveal" data-reveal-group="works">
           <div class="work-visual work-visual-agent" aria-hidden="true"><span>A</span></div>
           <div class="work-body">
             <p class="work-meta"><span>AI Calling Agent</span><span>2026</span></p>
@@ -120,7 +120,7 @@
             </p>
           </div>
         </article>
-        <article class="work-card">
+        <article class="work-card reveal" data-reveal-group="works">
           <div class="work-visual work-visual-koffa" aria-hidden="true"><span>K</span></div>
           <div class="work-body">
             <p class="work-meta"><span>KOFFA</span><span>2026 &middot; Demo</span></p>
@@ -135,11 +135,11 @@
       </div>
     </section>
 
-    <section id="dream" class="section dream-section reveal">
-      <p class="section-index">(04) &mdash; Dream Mode</p>
-      <h2>Wake. Dream. Build.</h2>
-      <p>Flip the <strong>Dream</strong> toggle in the navigation and the whole site drifts &mdash; the fluid deepens purple, the hero rock shifts colour, and the three projects above fall asleep, held by the dream. Click any sleeping card to wake it. Flip back to Wake and everything returns.</p>
-      <p><button class="btn btn-dark dream-toggle-inline" type="button">Enter Dream mode</button></p>
+    <section id="dream" class="section dream-section">
+      <p class="section-index reveal" data-reveal-group="dream">(04) &mdash; Dream Mode</p>
+      <h2 class="reveal" data-reveal-group="dream">Wake. Dream. Build.</h2>
+      <p class="reveal" data-reveal-group="dream">Flip the <strong>Dream</strong> toggle in the navigation and the whole site drifts &mdash; the fluid deepens purple, the hero rock shifts colour, and the three projects above fall asleep, held by the dream. Click any sleeping card to wake it. Flip back to Wake and everything returns.</p>
+      <p class="reveal" data-reveal-group="dream"><button class="btn btn-dark dream-toggle-inline" type="button">Enter Dream mode</button></p>
     </section>
 
     <section id="milestones" class="section milestones reveal">
