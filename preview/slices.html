@@ -46,22 +46,9 @@
     background-size:1000% 100%; background-repeat:no-repeat;
     will-change:transform,opacity;
   }
-  @keyframes sliceInDown {
-    from { transform:translateY(-112%) rotate(-2deg); opacity:0; }
-    to   { transform:translateY(0) rotate(0deg); opacity:1; }
-  }
-  @keyframes sliceInUp {
-    from { transform:translateY(112%) rotate(2deg); opacity:0; }
-    to   { transform:translateY(0) rotate(0deg); opacity:1; }
-  }
-  .slice-frame.play .slice:nth-child(odd) {
-    animation:sliceInDown .7s cubic-bezier(.22,1,.36,1) both;
-    animation-delay:calc(var(--i) * 60ms);
-  }
-  .slice-frame.play .slice:nth-child(even) {
-    animation:sliceInUp .7s cubic-bezier(.22,1,.36,1) both;
-    animation-delay:calc(var(--i) * 60ms);
-  }
+  /* Slice motion is driven by the Web Animations API in the script below
+     (slice.animate), NOT by CSS classes — class-toggle restarts never
+     worked in Chromium, so no animation rules live in the stylesheet. */
   .replay-btn {
     margin-top:26px; font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700;
     letter-spacing:.04em; text-transform:uppercase;
@@ -71,9 +58,6 @@
   .replay-btn:hover { background:var(--purple); transform:translateY(-1px); }
   .replay-btn:active { transform:translateY(0) scale(.98); }
   .note { margin-top:16px; font-size:12px; color:#a09d92; text-align:center; }
-  @media (prefers-reduced-motion:reduce) {
-    .slice-frame.play .slice { animation:none; } /* assembled photo instantly */
-  }
 </style>
 </head>
 <body>
@@ -111,23 +95,24 @@
   var slices = frame.querySelectorAll('.slice');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Web Animations API: every play() cancels the old animations and creates
+     FRESH ones per slice — no class state, no fill-mode dependency, no
+     reflow tricks — so Replay works on every click, even mid-animation.
+     fill:'both' makes the from-keyframe apply during each slice's stagger
+     delay, so the photo scatters instantly on click and reassembles. */
   function play() {
-    frame.classList.remove('play');
-    /* The old synchronous remove → reflow → re-add never restarted the
-       child-slice animations in Chromium: the finished fill-mode animations
-       kept holding the slices assembled. So cancel them explicitly, flush
-       style per slice, and re-add the class two frames later, after the
-       removal has been painted. */
     for (var i = 0; i < slices.length; i++) {
-      var anims = slices[i].getAnimations ? slices[i].getAnimations() : [];
+      var slice = slices[i];
+      var anims = slice.getAnimations ? slice.getAnimations() : [];
       for (var j = 0; j < anims.length; j++) anims[j].cancel();
-      void slices[i].offsetWidth;
+      var from = (i % 2 === 0)
+        ? { transform: 'translateY(-112%) rotate(-2deg)', opacity: 0 }
+        : { transform: 'translateY(112%) rotate(2deg)', opacity: 0 };
+      slice.animate(
+        [from, { transform: 'translateY(0) rotate(0deg)', opacity: 1 }],
+        { duration: 700, delay: i * 60, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
+      );
     }
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        frame.classList.add('play');
-      });
-    });
   }
 
   if (!reduced) {
@@ -135,9 +120,7 @@
     setTimeout(play, 350);
     btn.addEventListener('click', play);
   } else {
-    btn.addEventListener('click', function () {
-      frame.classList.remove('play'); /* stays assembled */
-    });
+    btn.style.display = 'none'; // assembled photo only, no motion
   }
 })();
 </script>
