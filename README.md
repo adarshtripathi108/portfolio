@@ -10,6 +10,7 @@ Personal portfolio website for Adarsh Tripathi, B.E. CSE student at Chitkara Uni
 - Fonts: Space Grotesk for display, Inter for body (Google Fonts + system fallback).
 - Hero: Three.js scene — a floating glass/ice rock, a rotating ring of 3D text, and a particle cloud. Graceful fallback: if WebGL or the CDN fails, the headline stays with a CSS gradient blob.
 - Fluid background: a fixed fullscreen Canvas 2D layer (glass-blue, purple, warm grey on cream). Moving the cursor reveals trailing colour that fades, with a bright glow at the cursor itself. Intensifies in Dream mode.
+- Particle portrait: the About photo draws itself from ~2,800 dots that fly in and assemble into the portrait in the photo's own colours (Canvas 2D, no recolour), beside a small code strip and a Replay button.
 - WAKE/DREAM toggle: re-tints the whole site purple, deepens the fluid, shifts the hero rock. In Dream mode the three work cards sleep ("held by the dream — click to wake"); clicking one wakes it.
 - Pixel-cube cursor follower (desktop fine pointers only), mouse-follow 3D tilt on work and milestone cards, scroll reveal throughout.
 - Performance and access: pixel ratio capped at 2, rendering pauses when the tab is hidden or the hero is off-screen, `prefers-reduced-motion` disables the animation (content stays fully visible), touch devices get no tilt.
@@ -21,6 +22,7 @@ Personal portfolio website for Adarsh Tripathi, B.E. CSE student at Chitkara Uni
 - `work/javaquest.html`, `work/ai-calling-agent.html`, `work/koffa.html` — one project detail page per selected work ("Open the memory")
 - `css/style.css` — all styles (responsive with mobile nav below 820px)
 - `js/fluid.js` — cursor-reactive fluid background (Canvas 2D, no WebGL)
+- `js/portrait.js` — particle portrait in About: grid-sampled dots assemble into the photo in its own colours (Canvas 2D)
 - `js/hero3d.js` — Three.js hero scene (ES module, pinned CDN importmap)
 - `js/main.js` — mobile nav, dream toggle, scroll reveal, cursor cube, card tilt, dream-wake
 - `assets/avatar.jpg` — Adarsh's GitHub avatar photo
