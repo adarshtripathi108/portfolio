@@ -46,18 +46,26 @@
     user-select:none; -webkit-user-drag:none;
   }
   .holo-sheen {
-    position:absolute; inset:0; pointer-events:none;
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    /* VIVID rainbow, plain composite (no blend mode): the old color-dodge
+       blend barely registered — blending against the backdrop fails inside
+       the card's preserve-3d context. A strong semi-transparent gradient
+       composites normally and is guaranteed visible over the photo. */
     background:linear-gradient(var(--angle,135deg),
-      rgba(255,0,128,.28), rgba(255,200,0,.22), rgba(0,255,200,.22),
-      rgba(0,120,255,.28), rgba(160,0,255,.28));
-    mix-blend-mode:color-dodge; opacity:var(--sheen,0);
+      rgba(255,0,60,.65), rgba(255,128,0,.65), rgba(255,235,0,.6),
+      rgba(0,220,120,.6), rgba(0,140,255,.65), rgba(150,0,255,.65),
+      rgba(255,0,160,.65));
+    filter:hue-rotate(var(--hue,0deg));
+    opacity:var(--sheen,0);
     transition:opacity .35s ease;
   }
   .holo-glare {
-    position:absolute; inset:0; pointer-events:none;
-    background:radial-gradient(circle 320px at var(--gx,50%) var(--gy,50%),
-      rgba(255,255,255,.5), rgba(255,255,255,0) 62%);
-    mix-blend-mode:overlay; opacity:var(--glare,0);
+    position:absolute; inset:0; z-index:2; pointer-events:none;
+    /* Dedicated white glare, plain composite (no blend mode — same reason
+       as the sheen: overlay blending was invisible in this 3D context). */
+    background:radial-gradient(circle 300px at var(--gx,50%) var(--gy,50%),
+      rgba(255,255,255,.55), rgba(255,255,255,.18) 45%, rgba(255,255,255,0) 68%);
+    opacity:var(--glare,0);
     transition:opacity .35s ease;
   }
   .hint { margin-top:26px; font-size:13px; color:#77756c; text-align:center; }
@@ -129,8 +137,9 @@
     ty = -(py - 0.5) * 2 * MAX;
     card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
     card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
-    card.style.setProperty('--angle', (135 + (px - 0.5) * 120).toFixed(0) + 'deg');
-    card.style.setProperty('--sheen', '0.55');
+    card.style.setProperty('--angle', (135 + (px - 0.5) * 180).toFixed(0) + 'deg');
+    card.style.setProperty('--hue', ((px - 0.5) * 160).toFixed(0) + 'deg');
+    card.style.setProperty('--sheen', '0.85');
     card.style.setProperty('--glare', '1');
     start();
   });
