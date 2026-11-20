@@ -260,6 +260,61 @@
     }
   });
 
-  /* Part 3 (trigger + replay) is added below in the next commit. */
-  function onPhotoReady() { /* replaced in Part 3 */ }
+  /* ---- Part 3: trigger, replay, reduced motion, resize ------------ */
+  var replayBtn = document.getElementById("portrait-replay");
+  var inView = false;
+  var played = false;
+
+  /* Play once: the full assembly, or the instant final portrait when
+     the user prefers reduced motion. */
+  function play() {
+    if (!photoReady || played) return;
+    played = true;
+    if (reduceMotion) drawFinal();
+    else startAssembly();
+  }
+
+  function onPhotoReady() {
+    if (inView) play();
+  }
+
+  /* Play when the About section scrolls into view (once). */
+  var aboutSection = document.getElementById("about");
+  if ("IntersectionObserver" in window && aboutSection) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          inView = true;
+          observer.disconnect();
+          play();
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(aboutSection);
+  } else {
+    // No observer support: play as soon as the photo is ready.
+    inView = true;
+  }
+
+  /* Replay re-runs the assembly from fresh scattered dots. */
+  if (replayBtn) {
+    replayBtn.addEventListener("click", function () {
+      if (!photoReady) return;
+      played = true;
+      if (reduceMotion) drawFinal();
+      else startAssembly();
+    });
+  }
+
+  /* Resize: rescale to the new canvas size. A running flight adapts
+     live (targets move); a finished portrait redraws instantly. */
+  var resizeTimer = 0;
+  window.addEventListener("resize", function () {
+    if (!photoReady || !played) return;
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(function () {
+      if (animating) measure();
+      else drawFinal();
+    }, 200);
+  });
 })();
