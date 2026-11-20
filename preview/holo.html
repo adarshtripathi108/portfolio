@@ -67,7 +67,10 @@
     50% { transform:translateY(-7px); }
   }
   @media (hover:none), (prefers-reduced-motion:reduce) {
-    .holo-card { animation:floaty 6s ease-in-out infinite; cursor:default; }
+    /* Float the wrapper, never the card: a CSS animation on the card would
+       override the JS tilt transform (animations beat inline styles). */
+    .scene { animation:floaty 6s ease-in-out infinite; }
+    .holo-card { cursor:default; }
   }
 </style>
 </head>
@@ -97,9 +100,11 @@
 <script>
 (function () {
   var card = document.getElementById('holoCard');
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!fine || reduced) return; // touch / reduced motion: CSS float handles it
+  if (reduced) return; // reduced motion: the CSS float on the wrapper handles it
+  /* No fine-pointer gate: some browsers (incl. headless Chromium) report
+     (hover: none) / (pointer: coarse) even with a working mouse, and gating
+     on it killed the whole effect. The listeners are harmless on touch. */
 
   var MAX = 10, tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
 
