@@ -143,17 +143,36 @@ main {
   transform: translateY(0) scale(0.98);
 }
 
-/* Scroll reveal — sections fade in as they enter the viewport.
-   main.js adds .visible; reduced-motion and no-JS fallbacks below. */
+/* Scroll reveal — elements fade, rise and settle as they enter the
+   viewport. main.js adds .visible; stagger delays come from
+   data-reveal-group. Uses the individual translate/scale properties
+   (not transform) so the card tilt in main.js — which sets an inline
+   transform — composes with the reveal instead of fighting it.
+   Reduced-motion and no-JS fallbacks below. */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  translate: 0 28px;
+  scale: 0.985;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: none;
+  translate: 0 0;
+  scale: 1;
+}
+
+/* Cards declare their own transition later in this file; this
+   higher-specificity rule keeps the reveal transitions AND the card
+   hover/tilt transitions (transform, box-shadow) together. */
+.work-card.reveal,
+.milestone-card.reveal {
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -164,6 +183,8 @@ main {
   .reveal {
     opacity: 1;
     transform: none;
+    translate: none;
+    scale: none;
     transition: none;
   }
 }
