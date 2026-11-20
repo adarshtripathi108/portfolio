@@ -547,6 +547,60 @@ main {
   outline-offset: 2px;
 }
 
+/* Code strip beside the portrait — a small dark editor panel. */
+.portrait-code {
+  background: #121218;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 12px 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.portrait-code-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.portrait-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3A3A44;
+}
+
+.portrait-dot:first-child {
+  background: #FF5F57;
+}
+
+.portrait-dot:nth-child(2) {
+  background: #FEBC2E;
+}
+
+.portrait-dot:nth-child(3) {
+  background: #28C840;
+}
+
+.portrait-code-name {
+  margin-left: 6px;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #9A9AA8;
+}
+
+.portrait-code pre {
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #C9C9D6;
+  white-space: pre;
+  overflow-x: auto;
+}
+
 .about-copy p a {
   font-weight: 600;
   border-bottom: 1px solid var(--glass);
@@ -981,6 +1035,10 @@ body.dream .section-index {
     max-width: 320px;
   }
 
+  .about-photo.portrait-panel {
+    max-width: 600px;
+  }
+
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1033,6 +1091,18 @@ body.dream .section-index {
   .discipline-note {
     grid-column: 2;
   }
+
+  .portrait-panel {
+    max-width: 480px;
+  }
+
+  .portrait-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-caption {
+    font-size: 22px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1059,6 +1129,14 @@ body.dream .section-index {
 
   .site-footer {
     padding: 24px 20px;
+  }
+
+  .portrait-panel {
+    padding: 16px;
+  }
+
+  .portrait-code pre {
+    font-size: 10.5px;
   }
 }
 
