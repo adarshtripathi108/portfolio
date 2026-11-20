@@ -61,8 +61,26 @@
     <section id="about" class="section about reveal">
       <p class="section-index">(01) &mdash; About</p>
       <div class="about-grid">
-        <div class="about-photo">
-          <img src="assets/avatar.jpg" alt="Portrait of Adarsh Tripathi" width="460" height="460">
+        <div class="about-photo portrait-panel">
+          <p class="portrait-caption">Drawn by code.</p>
+          <div class="portrait-stage">
+            <div class="portrait-canvas-wrap">
+              <canvas id="portrait-canvas" aria-label="Portrait of Adarsh Tripathi, drawn from particles"></canvas>
+              <img class="portrait-fallback" src="assets/avatar.jpg" alt="Portrait of Adarsh Tripathi" width="460" height="460">
+            </div>
+            <div class="portrait-code" aria-hidden="true">
+              <p class="portrait-code-bar"><span class="portrait-dot"></span><span class="portrait-dot"></span><span class="portrait-dot"></span><span class="portrait-code-name">portrait.js</span></p>
+              <pre><code>// sample the photo on a grid
+const dots = sampleGrid(photo);
+
+// fly each dot home in its
+// true photo colour
+dots.forEach(dot =&gt; {
+  fly(dot, dot.colour);
+});</code></pre>
+            </div>
+          </div>
+          <button id="portrait-replay" class="portrait-replay" type="button">Replay the drawing</button>
         </div>
         <div class="about-copy">
           <h2>The person behind the work.</h2>
@@ -191,5 +209,6 @@
   <script src="js/fluid.js?v=6" defer></script>
   <script type="module" src="js/hero3d.js?v=5"></script>
   <script src="js/main.js?v=5" defer></script>
+  <script src="js/portrait.js?v=1" defer></script>
 </body>
 </html>
