@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3 · Slice Assemble — Photo Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F2F0E9; --ink:#111111; --purple:#7A6CFF; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--cream); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:28px 20px 48px;
+  }
+  .preview-nav {
+    display:flex; gap:6px; flex-wrap:wrap; justify-content:center;
+    background:#fff; border:1px solid #e3e0d6; border-radius:999px; padding:6px;
+    box-shadow:0 2px 10px rgba(17,17,17,.06); margin-bottom:36px;
+  }
+  .preview-nav a {
+    text-decoration:none; color:var(--ink); font-size:13px; font-weight:600;
+    padding:8px 16px; border-radius:999px; transition:background .2s,color .2s;
+  }
+  .preview-nav a:hover { background:#efece3; }
+  .preview-nav a.active { background:var(--ink); color:#fff; }
+  header { text-align:center; margin-bottom:32px; }
+  header h1 {
+    font-family:'Space Grotesk',sans-serif; font-size:clamp(30px,5vw,44px);
+    font-weight:700; letter-spacing:-.02em; line-height:1.05;
+  }
+  header h1 span { color:var(--purple); }
+  header p { margin-top:10px; font-size:16px; color:#55534c; max-width:520px; }
+  .slice-frame {
+    position:relative; width:min(400px,86vw); aspect-ratio:1/1;
+    display:flex; border-radius:24px; overflow:hidden;
+    box-shadow:0 24px 60px rgba(17,17,17,.22), 0 4px 14px rgba(17,17,17,.12);
+    background:#111;
+  }
+  .slice {
+    flex:1 1 0; height:100%;
+    background-image:url('../assets/avatar.jpg');
+    background-size:1000% 100%; background-repeat:no-repeat;
+    will-change:transform,opacity;
+  }
+  @keyframes sliceInDown {
+    from { transform:translateY(-112%) rotate(-2deg); opacity:0; }
+    to   { transform:translateY(0) rotate(0deg); opacity:1; }
+  }
+  @keyframes sliceInUp {
+    from { transform:translateY(112%) rotate(2deg); opacity:0; }
+    to   { transform:translateY(0) rotate(0deg); opacity:1; }
+  }
+  .slice-frame.play .slice:nth-child(odd) {
+    animation:sliceInDown .7s cubic-bezier(.22,1,.36,1) both;
+    animation-delay:calc(var(--i) * 60ms);
+  }
+  .slice-frame.play .slice:nth-child(even) {
+    animation:sliceInUp .7s cubic-bezier(.22,1,.36,1) both;
+    animation-delay:calc(var(--i) * 60ms);
+  }
+  .replay-btn {
+    margin-top:26px; font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700;
+    letter-spacing:.04em; text-transform:uppercase;
+    background:var(--ink); color:#fff; border:none; border-radius:999px;
+    padding:12px 28px; cursor:pointer; transition:transform .15s ease, background .2s ease;
+  }
+  .replay-btn:hover { background:var(--purple); transform:translateY(-1px); }
+  .replay-btn:active { transform:translateY(0) scale(.98); }
+  .note { margin-top:16px; font-size:12px; color:#a09d92; text-align:center; }
+  @media (prefers-reduced-motion:reduce) {
+    .slice-frame.play .slice { animation:none; } /* assembled photo instantly */
+  }
+</style>
+</head>
+<body>
+  <nav class="preview-nav" aria-label="Photo previews">
+    <a href="holo.html">1 · Holo Tilt</a>
+    <a href="spotlight.html">2 · Spotlight</a>
+    <a href="slices.html" class="active" aria-current="page">3 · Slices</a>
+  </nav>
+
+  <header>
+    <h1>Slice <span>Assemble</span></h1>
+    <p>Ten vertical slices fly in from alternating directions and assemble into the full, crisp photo.</p>
+  </header>
+
+  <div class="slice-frame" id="sliceFrame" role="img" aria-label="Adarsh Tripathi">
+    <div class="slice" style="--i:0; background-position:0% 50%"></div>
+    <div class="slice" style="--i:1; background-position:11.111% 50%"></div>
+    <div class="slice" style="--i:2; background-position:22.222% 50%"></div>
+    <div class="slice" style="--i:3; background-position:33.333% 50%"></div>
+    <div class="slice" style="--i:4; background-position:44.444% 50%"></div>
+    <div class="slice" style="--i:5; background-position:55.556% 50%"></div>
+    <div class="slice" style="--i:6; background-position:66.667% 50%"></div>
+    <div class="slice" style="--i:7; background-position:77.778% 50%"></div>
+    <div class="slice" style="--i:8; background-position:88.889% 50%"></div>
+    <div class="slice" style="--i:9; background-position:100% 50%"></div>
+  </div>
+
+  <button class="replay-btn" id="replayBtn" type="button">Replay the assembly</button>
+  <p class="note">Preview only — pick one and it will replace the About photo.</p>
+
+<script>
+(function () {
+  var frame = document.getElementById('sliceFrame');
+  var btn = document.getElementById('replayBtn');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function play() {
+    frame.classList.remove('play');
+    void frame.offsetWidth; /* restart the animation */
+    frame.classList.add('play');
+  }
+
+  if (!reduced) {
+    // Play once on load, after a short beat so the motion is seen.
+    setTimeout(play, 350);
+    btn.addEventListener('click', play);
+  } else {
+    btn.addEventListener('click', function () {
+      frame.classList.remove('play'); /* stays assembled */
+    });
+  }
+})();
+</script>
+</body>
+</html>
