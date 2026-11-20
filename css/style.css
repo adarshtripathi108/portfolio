@@ -449,7 +449,7 @@ main {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 600px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 56px;
   align-items: start;
 }
@@ -460,145 +460,6 @@ main {
   object-fit: cover;
   border-radius: var(--radius);
   box-shadow: 0 24px 48px rgba(17, 17, 17, 0.14);
-}
-
-/* Portrait panel — particle portrait in the Adri style: the photo
-   draws itself from dots on a black panel, beside a code strip. */
-.portrait-panel {
-  background: #0B0B0F;
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: 0 24px 48px rgba(17, 17, 17, 0.14);
-}
-
-.portrait-caption {
-  margin: 0 0 16px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-size: 26px;
-  line-height: 1.2;
-  text-align: center;
-  background: linear-gradient(120deg, #2DD4BF 0%, #3B82F6 50%, #7A6CFF 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.portrait-stage {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 16px;
-  align-items: stretch;
-}
-
-.portrait-canvas-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #000000;
-}
-
-#portrait-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.portrait-panel .portrait-fallback {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.portrait-panel.portrait-live .portrait-fallback {
-  display: none;
-}
-
-.portrait-replay {
-  display: block;
-  margin: 16px auto 0;
-  padding: 10px 22px;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #E8E6F5;
-  background: rgba(122, 108, 255, 0.16);
-  border: 1px solid rgba(122, 108, 255, 0.45);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.portrait-replay:hover {
-  background: rgba(122, 108, 255, 0.28);
-  transform: translateY(-1px);
-}
-
-.portrait-replay:focus-visible {
-  outline: 2px solid var(--purple);
-  outline-offset: 2px;
-}
-
-/* Code strip beside the portrait — a small dark editor panel. */
-.portrait-code {
-  background: #121218;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 12px 12px 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.portrait-code-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 12px;
-}
-
-.portrait-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #3A3A44;
-}
-
-.portrait-dot:first-child {
-  background: #FF5F57;
-}
-
-.portrait-dot:nth-child(2) {
-  background: #FEBC2E;
-}
-
-.portrait-dot:nth-child(3) {
-  background: #28C840;
-}
-
-.portrait-code-name {
-  margin-left: 6px;
-  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
-  font-size: 11px;
-  color: #9A9AA8;
-}
-
-.portrait-code pre {
-  margin: 0;
-  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
-  font-size: 11px;
-  line-height: 1.7;
-  color: #C9C9D6;
-  white-space: pre;
-  overflow-x: auto;
 }
 
 .about-copy p a {
@@ -1035,10 +896,6 @@ body.dream .section-index {
     max-width: 320px;
   }
 
-  .about-photo.portrait-panel {
-    max-width: 600px;
-  }
-
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1091,18 +948,6 @@ body.dream .section-index {
   .discipline-note {
     grid-column: 2;
   }
-
-  .portrait-panel {
-    max-width: 480px;
-  }
-
-  .portrait-stage {
-    grid-template-columns: 1fr;
-  }
-
-  .portrait-caption {
-    font-size: 22px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -1129,14 +974,6 @@ body.dream .section-index {
 
   .site-footer {
     padding: 24px 20px;
-  }
-
-  .portrait-panel {
-    padding: 16px;
-  }
-
-  .portrait-code pre {
-    font-size: 10.5px;
   }
 }
 
