@@ -171,12 +171,17 @@
   // 3D tilt — subtle mouse-follow tilt on work and milestone cards.
   // Same approach as the previous version: perspective transform,
   // rAF-throttled, disabled on touch and reduced motion.
+  // Listens to mouseover as well as mousemove: when the page
+  // smooth-scrolls (or a card's reveal rise moves it) under a
+  // stationary cursor, the browser fires mouseover/mouseenter but
+  // NOT mousemove — a mousemove-only tilt would show zero tilt on
+  // a card the cursor is already hovering.
   if (finePointer && !reduceMotion) {
     var MAX_TILT = 7; // degrees, each way
     var tiltTargets = document.querySelectorAll(".work-card, .milestone-card");
     tiltTargets.forEach(function (card) {
       var raf = null;
-      card.addEventListener("mousemove", function (event) {
+      function applyTilt(event) {
         var rect = card.getBoundingClientRect();
         var px = (event.clientX - rect.left) / rect.width - 0.5;
         var py = (event.clientY - rect.top) / rect.height - 0.5;
@@ -188,7 +193,9 @@
             "deg) rotateY(" + (px * MAX_TILT).toFixed(2) + "deg) translateZ(0)";
           card.classList.add("is-tilting");
         });
-      });
+      }
+      card.addEventListener("mousemove", applyTilt);
+      card.addEventListener("mouseover", applyTilt);
       card.addEventListener("mouseleave", function () {
         if (raf) cancelAnimationFrame(raf);
         card.style.transition = "";
