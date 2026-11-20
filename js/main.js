@@ -84,8 +84,18 @@
     });
   }
 
-  // Scroll reveal — fade sections in as they enter the viewport.
+  // Scroll reveal — fade elements in as they enter the viewport.
+  // Elements sharing a data-reveal-group stagger in: 90ms apart,
+  // capped at 400ms, so a row of cards arrives one after another.
   var revealEls = document.querySelectorAll(".reveal");
+  var revealGroups = {};
+  revealEls.forEach(function (el) {
+    var group = el.getAttribute("data-reveal-group");
+    if (!group) return;
+    if (!revealGroups[group]) revealGroups[group] = 0;
+    el.style.transitionDelay = Math.min(revealGroups[group] * 90, 400) + "ms";
+    revealGroups[group] += 1;
+  });
   if ("IntersectionObserver" in window) {
     var observer = new IntersectionObserver(
       function (entries) {
@@ -93,10 +103,17 @@
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
+            // Clear the stagger delay once the reveal is done, so it
+            // never slows later transitions (e.g. the card tilt).
+            (function (el) {
+              setTimeout(function () {
+                el.style.transitionDelay = "";
+              }, 900);
+            })(entry.target);
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
     );
     revealEls.forEach(function (el) {
       observer.observe(el);
