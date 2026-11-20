@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1 · Holo Tilt Card — Photo Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F2F0E9; --ink:#111111; --purple:#7A6CFF; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--cream); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:28px 20px 48px;
+  }
+  .preview-nav {
+    display:flex; gap:6px; flex-wrap:wrap; justify-content:center;
+    background:#fff; border:1px solid #e3e0d6; border-radius:999px; padding:6px;
+    box-shadow:0 2px 10px rgba(17,17,17,.06); margin-bottom:36px;
+  }
+  .preview-nav a {
+    text-decoration:none; color:var(--ink); font-size:13px; font-weight:600;
+    padding:8px 16px; border-radius:999px; transition:background .2s,color .2s;
+  }
+  .preview-nav a:hover { background:#efece3; }
+  .preview-nav a.active { background:var(--ink); color:#fff; }
+  header { text-align:center; margin-bottom:32px; }
+  header h1 {
+    font-family:'Space Grotesk',sans-serif; font-size:clamp(30px,5vw,44px);
+    font-weight:700; letter-spacing:-.02em; line-height:1.05;
+  }
+  header h1 span { color:var(--purple); }
+  header p { margin-top:10px; font-size:16px; color:#55534c; max-width:520px; }
+  .scene { perspective:1000px; }
+  .holo-card {
+    position:relative; width:min(400px,86vw); aspect-ratio:1/1;
+    border-radius:24px; overflow:hidden; cursor:pointer;
+    box-shadow:0 24px 60px rgba(17,17,17,.22), 0 4px 14px rgba(17,17,17,.12);
+    transform-style:preserve-3d; will-change:transform;
+  }
+  .holo-card img {
+    display:block; width:100%; height:100%; object-fit:cover;
+    user-select:none; -webkit-user-drag:none;
+  }
+  .holo-sheen {
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(var(--angle,135deg),
+      rgba(255,0,128,.28), rgba(255,200,0,.22), rgba(0,255,200,.22),
+      rgba(0,120,255,.28), rgba(160,0,255,.28));
+    mix-blend-mode:color-dodge; opacity:var(--sheen,0);
+    transition:opacity .35s ease;
+  }
+  .holo-glare {
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(circle 320px at var(--gx,50%) var(--gy,50%),
+      rgba(255,255,255,.5), rgba(255,255,255,0) 62%);
+    mix-blend-mode:overlay; opacity:var(--glare,0);
+    transition:opacity .35s ease;
+  }
+  .hint { margin-top:26px; font-size:13px; color:#77756c; text-align:center; }
+  .note { margin-top:8px; font-size:12px; color:#a09d92; text-align:center; }
+  @keyframes floaty {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-7px); }
+  }
+  @media (hover:none), (prefers-reduced-motion:reduce) {
+    .holo-card { animation:floaty 6s ease-in-out infinite; cursor:default; }
+  }
+</style>
+</head>
+<body>
+  <nav class="preview-nav" aria-label="Photo previews">
+    <a href="holo.html" class="active" aria-current="page">1 · Holo Tilt</a>
+    <a href="spotlight.html">2 · Spotlight</a>
+    <a href="slices.html">3 · Slices</a>
+  </nav>
+
+  <header>
+    <h1>Holo <span>Tilt</span> Card</h1>
+    <p>Move your cursor over the photo — it tilts in 3D with a holographic shine, then settles back flat.</p>
+  </header>
+
+  <div class="scene">
+    <div class="holo-card" id="holoCard">
+      <img src="../assets/avatar.jpg" alt="Adarsh Tripathi" draggable="false">
+      <div class="holo-sheen" aria-hidden="true"></div>
+      <div class="holo-glare" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <p class="hint">Desktop: hover &amp; move your cursor over the photo &nbsp;·&nbsp; Touch: it floats gently on its own.</p>
+  <p class="note">Preview only — pick one and it will replace the About photo.</p>
+
+<script>
+(function () {
+  var card = document.getElementById('holoCard');
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!fine || reduced) return; // touch / reduced motion: CSS float handles it
+
+  var MAX = 10, tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+
+  function tick() {
+    cx += (tx - cx) * 0.12;
+    cy += (ty - cy) * 0.12;
+    card.style.transform = 'rotateX(' + cy.toFixed(2) + 'deg) rotateY(' + cx.toFixed(2) + 'deg)';
+    if (Math.abs(tx - cx) > 0.01 || Math.abs(ty - cy) > 0.01) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+      if (tx === 0 && ty === 0) card.style.transform = '';
+    }
+  }
+  function start() { if (!raf) raf = requestAnimationFrame(tick); }
+
+  card.addEventListener('mousemove', function (e) {
+    var r = card.getBoundingClientRect();
+    var px = (e.clientX - r.left) / r.width;
+    var py = (e.clientY - r.top) / r.height;
+    tx = (px - 0.5) * 2 * MAX;
+    ty = -(py - 0.5) * 2 * MAX;
+    card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+    card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+    card.style.setProperty('--angle', (135 + (px - 0.5) * 120).toFixed(0) + 'deg');
+    card.style.setProperty('--sheen', '0.55');
+    card.style.setProperty('--glare', '1');
+    start();
+  });
+
+  card.addEventListener('mouseleave', function () {
+    tx = 0; ty = 0;
+    card.style.setProperty('--sheen', '0');
+    card.style.setProperty('--glare', '0');
+    start();
+  });
+})();
+</script>
+</body>
+</html>
