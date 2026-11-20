@@ -98,7 +98,168 @@
   };
   photo.src = "assets/avatar.jpg";
 
-  /* Part 2 (particles + animation) and Part 3 (trigger + replay)
-     are added below in later commits. */
+  /* ---- Part 2: particles, fly-in, animation loop ------------------ */
+  /* Each sample becomes one particle: a random scattered start, its
+     sample point as target, and its true photo colour. Particles fly
+     in near-white and settle into their photo colour as they land,
+     so the portrait assembles in full original colour. */
+  var particles = [];   // { nx, ny, sx, sy, tx, ty, delay, colour }
+  var size = 0;         // canvas CSS size (square)
+  var dotRadius = 2;
+  var animating = false;
+  var rafId = 0;
+  var animStart = 0;
+  var hiddenAt = 0;
+
+  var STAGGER_MS = 1200;  // delay spread across particles (top-down wave)
+  var JITTER_MS = 600;    // extra random delay per particle
+  var FLY_MS = 1000;      // each particle's flight time (total ~2.8s)
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function measure() {
+    var w = canvas.clientWidth || 360;
+    size = w;
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var px = Math.floor(w * dpr);
+    if (canvas.width !== px || canvas.height !== px) {
+      canvas.width = px;
+      canvas.height = px;
+    }
+    // Setting canvas.width resets the transform — re-apply it.
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Dot radius from grid spacing so the dots nearly tile the portrait.
+    var spacing = gridCols > 0 ? w / gridCols : 7;
+    dotRadius = Math.max(1.4, spacing * 0.42);
+    layoutParticles();
+  }
+
+  function layoutParticles() {
+    // (Re)compute pixel targets from normalised samples.
+    for (var i = 0; i < particles.length; i++) {
+      particles[i].tx = particles[i].nx * size;
+      particles[i].ty = particles[i].ny * size;
+    }
+  }
+
+  function buildParticles() {
+    particles = [];
+    for (var i = 0; i < samples.length; i++) {
+      var s = samples[i];
+      particles.push({
+        nx: s.nx,
+        ny: s.ny,
+        tx: s.nx * size,
+        ty: s.ny * size,
+        sx: Math.random() * size,
+        sy: Math.random() * size,
+        delay: (i / samples.length) * STAGGER_MS + Math.random() * JITTER_MS,
+        colour: s.r + "," + s.g + "," + s.b,
+        r: s.r,
+        g: s.g,
+        b: s.b
+      });
+    }
+  }
+
+  /* Draw one frame of the assembly at timestamp `now`. Returns true
+     when every particle has landed. */
+  function drawAt(now) {
+    var elapsed = now - animStart;
+    ctx.clearRect(0, 0, size, size);
+    var done = true;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var t = (elapsed - p.delay) / FLY_MS;
+      var x, y;
+      if (t <= 0) {
+        // Not flying yet: still scattered, near-white.
+        x = p.sx;
+        y = p.sy;
+        ctx.fillStyle = "rgb(238,238,244)";
+        done = false;
+      } else if (t >= 1) {
+        // Landed: true photo colour.
+        x = p.tx;
+        y = p.ty;
+        ctx.fillStyle = "rgb(" + p.colour + ")";
+      } else {
+        var e = easeOutCubic(t);
+        x = p.sx + (p.tx - p.sx) * e;
+        y = p.sy + (p.ty - p.sy) * e;
+        // Colour blends near-white -> true photo colour as it lands.
+        var r = Math.round(238 + (p.r - 238) * e);
+        var g = Math.round(238 + (p.g - 238) * e);
+        var b = Math.round(244 + (p.b - 244) * e);
+        ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+        done = false;
+      }
+      ctx.beginPath();
+      ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    return done;
+  }
+
+  function frame(now) {
+    if (!animating) return;
+    if (drawAt(now)) {
+      animating = false;
+      rafId = 0;
+      return;
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+
+  /* (Re)run the assembly from scattered dots. */
+  function startAssembly() {
+    if (!photoReady || samples.length === 0) return;
+    measure();
+    buildParticles();
+    // Hide the <img> fallback only now the canvas is drawing.
+    panel.classList.add("portrait-live");
+    animStart = performance.now();
+    animating = true;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(frame);
+  }
+
+  /* Draw the finished portrait instantly (reduced motion / resize). */
+  function drawFinal() {
+    if (!photoReady || samples.length === 0) return;
+    measure();
+    if (particles.length === 0) buildParticles();
+    else layoutParticles();
+    panel.classList.add("portrait-live");
+    ctx.clearRect(0, 0, size, size);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      ctx.fillStyle = "rgb(" + p.colour + ")";
+      ctx.beginPath();
+      ctx.arc(p.tx, p.ty, dotRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  /* Pause the loop while the tab is hidden; resume on show, shifting
+     the start time so the animation continues where it left off. */
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      if (animating) {
+        hiddenAt = performance.now();
+        animating = false;
+        if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+      }
+    } else if (hiddenAt) {
+      animStart += performance.now() - hiddenAt;
+      hiddenAt = 0;
+      if (photoReady && particles.length > 0 && !animating) {
+        animating = true;
+        rafId = requestAnimationFrame(frame);
+      }
+    }
+  });
+
+  /* Part 3 (trigger + replay) is added below in the next commit. */
   function onPhotoReady() { /* replaced in Part 3 */ }
 })();
